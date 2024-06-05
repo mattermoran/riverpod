@@ -679,6 +679,10 @@ The provider ${_debugCurrentlyBuildingElement!.origin} modified $origin while bu
 
   @override
   T refresh<T>(Refreshable<T> provider) {
+    if (!_mounted) {
+      throw StateError('Cannot use ref functions after provider was disposed');
+    }
+
     _assertNotOutdated();
     assert(_debugAssertCanDependOn(provider), '');
     return _container.refresh(provider);
@@ -686,6 +690,10 @@ The provider ${_debugCurrentlyBuildingElement!.origin} modified $origin while bu
 
   @override
   T read<T>(ProviderListenable<T> provider) {
+    if (!_mounted) {
+      throw StateError('Cannot use ref functions after provider was disposed');
+    }
+
     _assertNotOutdated();
     assert(!_debugIsRunningSelector, 'Cannot call ref.read inside a selector');
     assert(_debugAssertCanDependOn(provider), '');
@@ -697,6 +705,10 @@ The provider ${_debugCurrentlyBuildingElement!.origin} modified $origin while bu
 
   @override
   T watch<T>(ProviderListenable<T> listenable) {
+    if (!_mounted) {
+      throw StateError('Cannot use ref functions after provider was disposed');
+    }
+
     _assertNotOutdated();
     assert(!_debugIsRunningSelector, 'Cannot call ref.watch inside a selector');
 
@@ -756,6 +768,10 @@ The provider ${_debugCurrentlyBuildingElement!.origin} modified $origin while bu
     // Not part of the public "Ref" API
     void Function()? onDependencyMayHaveChanged,
   }) {
+    if (!_mounted) {
+      throw StateError('Cannot use ref functions after provider was disposed');
+    }
+
     _assertNotOutdated();
     assert(!_debugIsRunningSelector, 'Cannot call ref.read inside a selector');
     assert(_debugAssertCanDependOn(listenable), '');
